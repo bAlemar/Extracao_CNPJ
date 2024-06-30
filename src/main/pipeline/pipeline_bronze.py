@@ -3,10 +3,6 @@ from src.drivers.filemanager import FileManager
 import os
 import subprocess
 
-request = Requests()
-file_manager = FileManager()
-
-
 class Pipeline_Bronze:
     def __init__(self) -> None:
         self.request = Requests()
@@ -31,9 +27,9 @@ class Pipeline_Bronze:
         return lista_zip_dados
 
     def __extract_data_from_zip(self,path_database,lista_zip_dados):
-        file_manager.check_path(path_database)
+        self.file_manager.check_path(path_database)
         for dados in lista_zip_dados:
-            file_manager.extract_zip_from_memory(dados,path_database)
+            self.file_manager.extract_zip_from_memory(dados,path_database)
 
 
     def __convert_to_utf8(self,input_path, output_path):
