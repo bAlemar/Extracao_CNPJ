@@ -10,7 +10,7 @@ class Pipeline_Bronze:
 
     def run(self):
         lista_zip_dados = self.__download_dados()
-        
+    
         path_database = 'database/bronze/raw_data_latin'
         self.__extract_data_from_zip(path_database,lista_zip_dados)
         
@@ -40,4 +40,3 @@ class Pipeline_Bronze:
             input_path = os.path.join(path_database, arquivo)
             output_path = os.path.join(path_converted, arquivo)
             self.__convert_to_utf8(input_path, output_path)
-
