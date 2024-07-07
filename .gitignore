@@ -1,2 +1,5 @@
 *.pyc
 /venv
+.json
+google_sheets.py
+pipeline_sheets.py
