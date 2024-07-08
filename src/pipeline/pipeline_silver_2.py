@@ -64,8 +64,10 @@ class Pipeline_Silver_2:
     
     def __save_in_csv(self):
         path = 'database/silver/csv'
+        self.filemanager.check_path(path)
+        print(self.columns)
         self.filemanager.create_and_write_csv(path,
-                                              'silver_final.csv',
+                                              'silver_final',
                                               self.columns,
                                               self.results)
     

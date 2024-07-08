@@ -27,6 +27,7 @@ class Pipeline_Silver:
         path_database = 'database/bronze/raw_data_utf8'
         
         for arquivo in os.listdir(path_database):
+            print(arquivo)
             try:
                 table_number = self.__get_table_number(arquivo)
                 table_name = f"ESTABELECIMENTO{table_number}"
@@ -50,8 +51,9 @@ class Pipeline_Silver:
         return combined_query
     
 
-    def __export_to_parquet(self,file_path='database/silver/parquet/estabelecimentos.parquet'):
-        self.filemanager.check_path(file_path)
+    def __export_to_parquet(self,path_parquet='database/silver/parquet'):
+        self.filemanager.check_path(path_parquet)
+        file_path = f"{path_parquet}/estabelecimentos.parquet"
         #Exportando a tabela combinada para arquivo Parquet
         query = f"COPY ESTABELECIMENTOSFULL TO '{file_path}' (FORMAT PARQUET)"
         self.con.execute(query)
@@ -71,12 +73,12 @@ class Pipeline_Silver:
         tables = self.con.execute("SHOW TABLES").fetchall()
         self.tables = tables
         tables_message = [tables[pos][0] for pos in range(len(self.tables))]
-        tables_message = '\n'.join(tables)
+        tables_message = '\n'.join(tables_message)
         message = f"""
         As tabelas criadas foram:
-        \n{tables}
+        \n{tables_message}
         """
         print(message)
 
-    def __get_table_number(arquivo):
+    def __get_table_number(self,arquivo):
         return arquivo.split('.')[1][-1]

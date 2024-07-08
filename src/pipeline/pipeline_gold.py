@@ -7,15 +7,18 @@ class PipeLineGold:
     
     def __init__(self) -> None:
         self.filemanager = FileManager()
-        self.df = pd.read_csv('database/silver/csv/silver_final.csv')
+        self.df = pd.read_csv('database/silver/csv/silver_final.csv',low_memory=False)
+        
 
     def run(self):
         df = self.formating_df(self.df)
         df = self.creating_anos_empresa(df)
+        self.save_in_gold(df)
         return df
 
     def save_in_gold(self,df):
         path = 'database/gold/csv'
+        self.filemanager.check_path(path)
         df.to_csv(f'{path}/gold.csv',index=False)
 
     def formating_df(self,df):
@@ -111,7 +114,7 @@ class PipeLineGold:
     def creating_anos_empresa(self,df):
         data_atual = pd.to_datetime('today')
         df['ANOS_DE_EMPRESA'] = df['DATA_INICIO_ATIVIDADE'].apply(lambda x: data_atual.year - x.year - ((data_atual.month, data_atual.day) < (x.month, x.day)))
-
+        return df
     def __format_phone(self,ddd, phone):
         try:
             phone_str = str(int(phone))
