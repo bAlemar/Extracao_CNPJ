@@ -4,3 +4,9 @@
 google_sheets.py
 pipeline_sheets.py
 teste.ipynb
+*.csv
+*.parquet
+*.xlsx
+*.env
+.terraform
+*.hcl
