@@ -1,7 +1,6 @@
 *.pyc
 /venv
 .json
-google_sheets.py
 pipeline_sheets.py
 teste.ipynb
 *.csv
@@ -10,3 +9,4 @@ teste.ipynb
 *.env
 .terraform
 *.hcl
+*.tfstate

@@ -1,5 +1,8 @@
-from src.drivers.filemanager import FileManager
 import pandas as pd
+import numpy as np
+from src.drivers.filemanager import FileManager
+
+
 class PipeLineGold:
     """
     Tratamento com pandas do arquivo csv gerado...
@@ -13,6 +16,9 @@ class PipeLineGold:
     def run(self):
         df = self.formating_df(self.df)
         df = self.creating_anos_empresa(df)
+        df = self.selected_columns(df)
+        df = self.rename_columns(df)
+        df = self.clean_dataframe(df)
         self.save_in_gold(df)
         return df
 
@@ -115,6 +121,22 @@ class PipeLineGold:
         data_atual = pd.to_datetime('today')
         df['ANOS_DE_EMPRESA'] = df['DATA_INICIO_ATIVIDADE'].apply(lambda x: data_atual.year - x.year - ((data_atual.month, data_atual.day) < (x.month, x.day)))
         return df
+    
+    def selected_columns(self,df):
+        df = df[['CNPJ_FORMATADO','NOME','Telefone_1_Formatado','ANOS_DE_EMPRESA',
+                 'DATA_INICIO_ATIVIDADE','DATA_SITUACAO_CADASTRAL',
+                 'SITUACAO_CADASTRO',	'MOTIVO_SITUACAO_CADASTRAL']]
+        return df
+
+    def rename_columns(self,df):
+        df = df.rename(columns={'Telefone_1_Formatado':'Telefone'})
+        return df
+    
+    def clean_dataframe(self,df):
+        df = df.replace([np.inf, -np.inf], np.nan)  # Substituir inf e -inf por NaN
+        df = df.fillna('Não encontrado')  # Substituir NaNs por 0 (ou outro valor apropriado)
+        return df
+
     def __format_phone(self,ddd, phone):
         try:
             phone_str = str(int(phone))
